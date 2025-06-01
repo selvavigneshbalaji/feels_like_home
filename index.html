@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Feels Like Home - Book Your Room</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #fbfbfb;
+            color: #fbfbfb;
+        }
+
+        .caption {
+            position: absolute;
+            bottom: 20%;
+            left: 0%;
+            color: white;
+            background-color: #fbfbfb;
+            padding: 1rem;
+            border-radius: 5px;
+        }
+
+        @keyframes slideIn {
+            0% {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInUp {
+            0% {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        section.rooms {
+            padding: 3rem 1rem;
+            background: #fff;
+            text-align: center;
+            position: relative;
+        }
+
+        .rooms h2 {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .rooms {
+            text-align: center;
+            padding: 50px 20px;
+        }
+
+        .room-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .carousel {
+            display: flex;
+            overflow-x: auto;
+            gap: 1rem;
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+            padding: 1rem;
+        }
+
+        .carousel::-webkit-scrollbar {
+            display: none;
+        }
+
+        .room-card {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+            text-align: left;
+        }
+
+        .room-card img {
+            width: 400px;
+            height: 400px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .room-card h3 {
+            margin: 1rem 0 0.5rem;
+        }
+
+        .room-card p {
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .room-card button {
+            background: #3f51b5;
+            color: #fff;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .room-card button:hover {
+            background: #3f51b5;
+        }
+
+        .image-slider {
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px;
+
+        }
+
+        .image-slider img {
+            width: 100%;
+            display: none;
+            border-radius: 10px;
+
+        }
+
+        .image-slider img.active {
+            display: block;
+        }
+
+        .slider-controls {
+            position: absolute;
+            top: 50%;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            transform: translateY(-50%);
+            padding: 0 10px;
+        }
+
+        .slider-controls button {
+            background: rgba(0, 0, 0, 0.5);
+            border: none;
+            color: #fff;
+            font-size: 18px;
+            padding: 5px 10px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .room-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .stars {
+            color: #FFD700;
+            margin: 8px 0;
+        }
+
+        button {
+            background: #007BFF;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .carousel-controls {
+            position: absolute;
+            top: 50%;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            transform: translateY(-50%);
+            padding: 0 1rem;
+        }
+
+        .carousel-controls button {
+            background: rgba(255, 255, 255, 0.8);
+            border: none;
+            font-size: 1.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .carousel-controls button:hover {
+            background: #3f51b5;
+            color: white;
+        }
+
+        .testimonials {
+            text-align: center;
+            padding: 50px 20px;
+        }
+
+        .testimonial-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .testimonial-card {
+            background: #fff;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            width: 180px;
+            text-align: center;
+        }
+
+        .testimonial-card img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 10px;
+        }
+
+        section.contact {
+            padding: 3rem 1rem;
+            background: #f0f0f0;
+        }
+
+        .contact h2 {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .contact-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            justify-content: center;
+        }
+
+        .map-container,
+        .contact-info {
+            flex: 1 1 200px;
+            min-height: 300px;
+        }
+
+        .map-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            border-radius: 10px;
+        }
+
+        .contact-info {
+            background: #fff;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .contact-info p {
+            margin: 0.5rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #131313;
+        }
+
+        .contact-info i {
+            color: #3f51b5;
+        }
+
+        footer {
+            text-align: center;
+            padding: 1rem;
+            background: #333;
+        }
+
+        footer p {
+            color: #fff;
+        }
+
+
+
+        header {
+            position: sticky;
+            top: 0;
+            background-color: #3f51b5;
+            color: white;
+            z-index: 1000;
+        }
+
+        .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: white;
+            margin-left: 1rem;
+            text-decoration: none;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        p {
+            color: #131313;
+        }
+
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            color: #3f51b5;
+        }
+
+        .cover {
+            width: 100%;
+            height: 100%;
+            /* or any specific size */
+            overflow: hidden;
+        }
+
+        .cover img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    </style>
+</head>
+
+<body>
+    <header id="top">
+        <div class="container">
+            <h1>Feels Like Home</h1>
+            <nav>
+                <a href="#rooms">Rooms</a>
+                <a href="#contact">Contact</a>
+            </nav>
+        </div>
+    </header>
+    <section class="cover">
+
+        <img src="room10.jpg" alt="Room Image" />
+        <div class="caption">
+            <h2>Welcome to Feels Like Home</h2>
+            <p>Book Your Perfect Home Stay Today</p>
+        </div>
+
+
+    </section>
+
+
+
+    <section class="rooms" id="rooms">
+        <h2>Our Rooms</h2>
+        <div class="room-container">
+            <div class="room-card">
+                <div class="image-slider">
+                    <img src="tcr1.jpeg" class="active" alt="Room 1">
+                    <img src="tcr2.jpeg" alt="Room 1-2">
+                    <div class="slider-controls">
+                        <button class="prev">&#10094;</button>
+                        <button class="next">&#10095;</button>
+                    </div>
+                </div>
+                <div class="room-card-header">
+                    <h3>Feels Like Home</h3>
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                        <i class="far fa-star"></i>
+                    </div>
+                </div>
+                <p>₹3,999 / night</p>
+                <p>₹499/ per person</p>
+                <!-- <button>Book Now</button> -->
+            </div>
+
+            <div class="room-card">
+                <div class="image-slider">
+                    <img src="tcr5.jpeg" class="active" alt="Room 2">
+                    <img src="tcr6.jpeg" alt="Room 2-2">
+                    <div class="slider-controls">
+                        <button class="prev">&#10094;</button>
+                        <button class="next">&#10095;</button>
+                    </div>
+                </div>
+                <div class="room-card-header">
+                    <h3>Executive Suite</h3>
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                        <i class="far fa-star"></i>
+                    </div>
+                </div>
+                <p>₹5,499 / night</p>
+                <!-- <button>Book Now</button> -->
+            </div>
+        </div>
+    </section>
+
+
+    <section class="testimonials">
+        <h2>What Our Guests Say</h2>
+        <div class="testimonial-container">
+            <div class="testimonial-card">
+                <img src="https://randomuser.me/api/portraits/women/1.jpg" alt="Guest 1">
+                <p>Lovely room and great service!</p>
+                <strong>- Priya</strong>
+            </div>
+            <div class="testimonial-card">
+                <img src="https://randomuser.me/api/portraits/men/2.jpg" alt="Guest 2">
+                <p>Comfortable stay and friendly staff.</p>
+                <strong>- Rahul</strong>
+            </div>
+            <div class="testimonial-card">
+                <img src="https://randomuser.me/api/portraits/women/3.jpg" alt="Guest 3">
+                <p>Beautiful view and cozy ambiance.</p>
+                <strong>- Aisha</strong>
+            </div>
+            <div class="testimonial-card">
+                <img src="https://randomuser.me/api/portraits/men/4.jpg" alt="Guest 4">
+                <p>Perfect for a weekend getaway!</p>
+                <strong>- Karan</strong>
+            </div>
+            <div class="testimonial-card">
+                <img src="https://randomuser.me/api/portraits/women/5.jpg" alt="Guest 5">
+                <p>Spacious rooms and great amenities.</p>
+                <strong>- Sneha</strong>
+            </div>
+        </div>
+    </section>
+
+
+    <section class="contact" id="contact">
+        <h2>Contact Us</h2>
+        <div class="contact-wrapper">
+            <div class="map-container">
+                <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3570.9226147813547!2d78.1155041!3d8.499579399999998!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3b03919484b0e51d%3A0xb8f9538f0a6ab628!2sFeels%20Like%20Home!5e1!3m2!1sen!2sin!4v1745079384010!5m2!1sen!2sin"
+                    width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
+
+
+
+            </div>
+            <div class="contact-info">
+                <p><i class="fas fa-map-marker-alt"></i>Tiruchendur</p>
+                <p><i class="fas fa-phone"></i> +91 9688104147</p>
+                <p><i class="fas fa-envelope"></i> tiruchendurhomestay@gmail.com</p>
+                <p><i class="fas fa-clock"></i> 9:00 AM – 10:00 PM (Mon–Sun)</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 Feels Like Home. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // const carousel = document.getElementById('carousel');
+        // const prevBtn = document.getElementById('prevBtn');
+        // const nextBtn = document.getElementById('nextBtn');
+
+        // prevBtn.addEventListener('click', () => {
+        //     carousel.scrollBy({ left: -320, behavior: 'smooth' });
+        // });
+        // nextBtn.addEventListener('click', () => {
+        //     carousel.scrollBy({ left: 320, behavior: 'smooth' });
+        // });
+
+        const sliders = document.querySelectorAll('.image-slider');
+
+        sliders.forEach((slider, index) => {
+            console.log(slider, index, 'Carousel')
+            slider.dataset.index = index;
+            slider.dataset.current = 0;
+
+            const prevBtn = slider.querySelector('.prev');
+            console.log(prevBtn, 'prevBtn');
+            const nextBtn = slider.querySelector('.next');
+
+            prevBtn.addEventListener('click', () => navigateImage(index, -1));
+            nextBtn.addEventListener('click', () => navigateImage(index, 1));
+        });
+
+        function showImage(slider, index) {
+            const images = slider.querySelectorAll('img');
+            images.forEach(img => img.classList.remove('active'));
+            images[index].classList.add('active');
+        }
+
+        function navigateImage(sliderIndex, direction) {
+            const slider = document.querySelector(`.image-slider[data-index="${sliderIndex}"]`);
+            const images = slider.querySelectorAll('img');
+            let current = parseInt(slider.dataset.current);
+            current = (current + direction + images.length) % images.length;
+            slider.dataset.current = current;
+            showImage(slider, current);
+        }
+    </script>
+</body>
+
+</html>
